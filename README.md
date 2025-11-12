@@ -4,10 +4,14 @@ Leonova Anna 4CS-32
 
 Topic: Deploying Nginx on CentOS 9 Stream using Vagrant
 
-Objective
+Objective:
+
 Configure a Vagrantfile using the CentOS 9 Stream box.
+
 Automatically install and start Nginx.
+
 Forward port 80 → 8888.
+
 Upload your website content from ./www-content.
 
 Step 1
