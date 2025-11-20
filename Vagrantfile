@@ -45,7 +45,7 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
-  config.vm.synced_folder "./www-content", "/usr/share/nginx/html", type: "rsync", rsync__auto: true
+  config.vm.synced_folder "./www-content", "/tmp/site-content", type: "rsync", rsync__auto: true
 
   # Disable the default share of the current code directory. Doing this
   # provides improved isolation between the vagrant box and your host
@@ -81,9 +81,6 @@ Vagrant.configure("2") do |config|
     yum install -y nginx rsync
     setenforce 0
     sed -i 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
-    cat /etc/selinux/config
-    yum -y remove httpd httpd-tools || true
-    systemctl disable --now httpd || true
     systemctl disable firewalld || true
     systemctl stop firewalld || true
     rm -f /etc/nginx/conf.d/default.conf || true
@@ -100,7 +97,9 @@ server {
         }
     }
 EOF
-      
+
+    mkdir -p /usr/share/nginx/html
+    cp -r /tmp/site-content/* /usr/share/nginx/html/ 2>/dev/null || true
     systemctl enable nginx
     systemctl start nginx
   SHELL
